@@ -15,10 +15,10 @@
         </h3>
 
         <p>
-            {{ mamata.titulo }} <span v-if="mamata.extraHTML !== null" v-html="mamata.extraHTML"></span>
+            {{ mamata.titulo }} <span v-if="mamata.extraHTML" v-html="mamata.extraHTML"></span>
         
-            <template v-if="mamata.atualizacoes.length !== 0 ">
-            <span v-for="atualizacao in mamata.atualizacoes" :key="atualizacao.id">
+            <template v-if="mamata.atualizacoes">
+            <span v-for="(atualizacao, i) in mamata.atualizacoes" :key="'update-' + i">
                 <br>
                 Atualização de {{ atualizacao.data }}: 
                 <a
@@ -30,16 +30,18 @@
             </template>
         </p>
         
-        <ul>
-            <li v-for="link in mamata.links" :key="link.id">
-            <a
-                :href="link.url"
-                target="_blank"
-                rel="noopener noreferrer">
-                {{ link.nome }}
-            </a>
-            </li>
-        </ul>
+        <template v-if="mamata.links">
+            <ul>
+                <li v-for="(link, i) in mamata.links" :key="'link-' + i">
+                <a
+                    :href="link.url"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    {{ link.nome }}
+                </a>
+                </li>
+            </ul>
+        </template>
     </div>
 </template>
 

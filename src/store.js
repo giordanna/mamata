@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import axios from './axios'
+import 'firebase/database'
 
 Vue.use(Vuex)
 
@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
         authUser(state, userData) {
             state.idToken = userData.idToken
             state.userId = userData.userId
-            state.logado = userData.logado
+            state.logado = true
         },
         updateMamatas(state, mamatas) {
             state.dados.mamatas = mamatas 
@@ -30,6 +30,19 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        checkUser({commit}) {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    firebase.auth().currentUser.getIdToken()
+                        .then((token) => {
+                            commit('authUser', {
+                                idToken: token,
+                                userId: firebase.auth().currentUser.uid
+                            })
+                        })
+                }
+            })
+        },
         login({commit}, authData) {
             firebase.auth()
                 .signInWithEmailAndPassword(authData.email, authData.senha)
@@ -38,8 +51,7 @@ export const store = new Vuex.Store({
                         .then((token) => {
                             commit('authUser', {
                                 idToken: token,
-                                userId: firebase.auth().currentUser.uid,
-                                logado: true
+                                userId: firebase.auth().currentUser.uid
                             })
                         })
                 }, (erro) => console.log(erro))
@@ -56,50 +68,63 @@ export const store = new Vuex.Store({
         },
         getMamatas({commit}, tipo) {
             return new Promise((resolve) => {
-                axios.get(tipo)
-                    .then((resposta) => {
-                        if (tipo === 'mamatas') {
-                            commit('updateMamatas', 
-                                resposta.data.sort((a, b) => b.id - a.id)
-                            )
-                        } else {
-                            commit('updateOldMamatas', 
-                                resposta.data.sort((a, b) => a.id - b.id)
-                            )
-                        }
-                        resolve()
-                    })
-                    .catch(erro => console.error(erro))
+                firebase.database().ref().child(tipo).on('value', (snapshot) => {
+                    if (tipo === 'mamatas') {
+                        commit('updateMamatas', 
+                            Object.values(snapshot.val()).reverse()
+                        )
+                    } else {
+                        commit('updateOldMamatas',
+                        Object.values(snapshot.val())
+                        )
+                    }
+                    resolve()
+                })
             })
         },
         addMamata({dispatch}, dados) {
-            axios.post(dados.tipo, dados.mamata)
-                .then(() => {
+            let key = firebase.database().ref(dados.tipo).push().key
+            dados.mamata.id = key
+            firebase.database().ref(dados.tipo + '/' + key).set(dados.mamata, (erro) => {
+                if (erro) {
+                    console.error(erro)
+                } else {
                     dispatch('getMamatas', dados.tipo)
-                })
-                .catch(erro => console.error(erro))
+                }
+            })
         },
         updateMamata({dispatch}, dados) {
-            axios.put(dados.tipo + '/' + dados.mamata.id, dados.mamata)
-                .then(() => {
-                    dispatch('getMamatas', dados.tipo)
-                })
-                .catch(erro => console.error(erro))
+            firebase.database().ref(dados.tipo + '/' + dados.mamata.id)
+                .set(dados.mamata, (erro) => {
+                    if (erro) {
+                        console.error(erro)
+                    } else {
+                        dispatch('getMamatas', dados.tipo)
+                    }
+                }
+            )
         },
         deleteMamata({dispatch}, dados) {
-            axios.delete(dados.tipo + '/' + dados.id)
-                .then(() => {
-                    dispatch('getMamatas', dados.tipo)
-                })
-                .catch(erro => console.error(erro))
+            firebase.database().ref(dados.tipo + '/' + dados.id)
+                .set(null, (erro) => {
+                    if (erro) {
+                        console.error(erro)
+                    } else {
+                        dispatch('getMamatas', dados.tipo)
+                    }
+                }
+            )
         },
     },
     getters: {
         logado(state) {
             return state.logado
         },
-        dados(state) {
-            return state.dados
+        mamatas(state) {
+            return state.dados.mamatas
+        },
+        oldMamatas(state) {
+            return state.dados.oldMamatas
         }
     }
 })

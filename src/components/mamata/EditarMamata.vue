@@ -18,44 +18,48 @@
         <textarea v-model="mamataForm.extraHTML"></textarea>
 
         <h4>Atualizações</h4>
-        <div v-for="(atualizacao, i) in mamataForm.atualizacoes" :key="'update-' + i">
-            <label>Atualização {{ i + 1 }} 
-            <span
-                @click="mamataForm.atualizacoes.splice(i, 1)"
-                class="icon fa-times-circle"></span>
-            </label>
-            <label>Data</label>
-            <input type="text" v-model="atualizacao.data">
+        <template v-if="mamataForm.atualizacoes">
+            <div v-for="(atualizacao, i) in mamataForm.atualizacoes" :key="'update-' + i">
+                <label>Atualização {{ i + 1 }} 
+                <span
+                    @click="mamataForm.atualizacoes.splice(i, 1)"
+                    class="icon fa-times-circle"></span>
+                </label>
+                <label>Data</label>
+                <input type="text" v-model="atualizacao.data">
 
-            <label>URL</label>
-            <input type="text" v-model="atualizacao.link.url">
+                <label>URL</label>
+                <input type="text" v-model="atualizacao.link.url">
 
-            <label>Texto na URL</label>
-            <input type="text" v-model="atualizacao.link.nome">
+                <label>Texto na URL</label>
+                <input type="text" v-model="atualizacao.link.nome">
 
-        </div>
+            </div>
+        </template>
         <button
-            @click.prevent="mamataForm.atualizacoes.push({ data: '', link: { url: '', nome: '' } })">
+            @click.prevent="criarAtualizacao">
             + Atualização
         </button>
 
         <h4>Links</h4>
-        <div v-for="(link, i) in mamataForm.links" :key="'link-' + i">
+        <template v-if="mamataForm.links">
+            <div v-for="(link, i) in mamataForm.links" :key="'link-' + i">
 
-            <label>Link {{ i + 1 }}
-            <span
-                @click="mamataForm.links.splice(i, 1)"
-                class="icon fa-times-circle"></span>
-            </label>
-            <label>URL</label>
-            <input type="text" v-model="link.url">
+                <label>Link {{ i + 1 }}
+                <span
+                    @click="mamataForm.links.splice(i, 1)"
+                    class="icon fa-times-circle"></span>
+                </label>
+                <label>URL</label>
+                <input type="text" v-model="link.url">
 
-            <label>Texto na URL</label>
-            <input type="text" v-model="link.nome">
-        </div>
+                <label>Texto na URL</label>
+                <input type="text" v-model="link.nome">
+            </div>
+        </template>
 
         <button
-            @click.prevent="mamataForm.links.push({ url: '', nome: '' })">
+            @click.prevent="criarLink">
             + Link
         </button>
         <br>
@@ -76,8 +80,9 @@ export default {
         return {
             dataCrua: '',
             mamataForm: {
-                data: "",
-                titulo: "",
+                id: '',
+                data: '',
+                titulo: '',
                 extraHTML: null,
                 atualizacoes: [],
                 links: []
@@ -98,6 +103,18 @@ export default {
             this.mamataForm.data = this.dataCrua.split('-').reverse().join('/')
             this.$store.dispatch('updateMamata', { mamata: this.mamataForm, tipo: this.tipo })
             this.$emit('desativouEdicao')
+        },
+        criarAtualizacao() {
+            if (!this.mamataForm.atualizacoes) {
+                this.mamataForm.atualizacoes = []
+            }
+            this.mamataForm.atualizacoes.push({ data: '', link: { url: '', nome: '' } })
+        },
+        criarLink() {
+            if (!this.mamataForm.links) {
+                this.mamataForm.links = []
+            }
+            this.mamataForm.links.push({ url: '', nome: '' })
         }
     }
 }

@@ -24,7 +24,6 @@
 
 <script>
 import { directive as onClickaway } from 'vue-clickaway'
-import axios from './axios'
 
 export default {
   directives: {
@@ -41,15 +40,18 @@ export default {
       return this.$route.path === '/' ? 'header' : 'article'
     },
     logado() {
-      return !this.$store.getters.logado ? false : this.$store.getters.logado
+      return this.$store.getters.logado
     },
     mamatas() {
-      return !this.$store.getters.dados.mamatas ? [] : this.$store.getters.dados.mamatas
+      return this.$store.getters.mamatas
     }
   },
   created() {
+    this.$store.dispatch('checkUser')
     this.$store.dispatch('getMamatas', 'mamatas').then(() => {
-      this.pronto = this.$store.getters.dados.mamatas !== null
+      this.$store.dispatch('getMamatas', 'oldMamatas').then(() => {
+        this.pronto = true
+      })
     })
   },
   methods: {

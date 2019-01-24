@@ -13,8 +13,7 @@
           v-for="mamata in mamatas"
           :mamata="mamata"
           tipo="mamatas"
-          :key="'new-mamata-' + mamata.id"
-          @mouseover="mouseOver(mamata.id)" />
+          :key="mamata.id" />
 
         <h3>Recordar é viver</h3>
 
@@ -22,8 +21,7 @@
           v-for="mamata in oldMamatas"
           :mamata="mamata"
           tipo="oldMamatas"
-          :key="'old-mamata-' + mamata.id"
-          @mouseover="mouseOver(mamata.id)" />
+          :key="mamata.id" />
     </div>
   </transition>
 </template>
@@ -37,14 +35,11 @@ export default {
   name: 'v-mamatas',
   computed: {
     logado() {
-      return !this.$store.getters.logado ? false : this.$store.getters.logado
+      return this.$store.getters.logado
     },
     oldMamatas() {
-      return !this.$store.getters.dados.oldMamatas ? [] : this.$store.getters.dados.oldMamatas
+      return this.$store.getters.oldMamatas
     }
-  },
-  mounted() {
-    this.$store.dispatch('getMamatas', 'oldMamatas')
   }
 }
 
