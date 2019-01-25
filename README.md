@@ -23,7 +23,7 @@ npm run serve
 
 OBS: o config do firebase utiliza variáveis que estão no arquivo .env.local, o qual eu não farei uparei para o repositório.
 
-### Compilar para produção
+## Compilar para produção
 ```
 npm run build
 ```
