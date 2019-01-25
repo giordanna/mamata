@@ -12,6 +12,7 @@ Uma releitura da obra prima acabouamamata.com.br, com autenticação de usuário
 ## Instalação
 ```
 git clone https://github.com/giordanna/mamata.git
+cd mamata
 npm install
 ```
 
