@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
         authUser(state, userData) {
             state.idToken = userData.idToken
             state.userId = userData.userId
-            state.logado = true
+            state.logado = userData.logado
         },
         updateMamatas(state, mamatas) {
             state.dados.mamatas = mamatas 
@@ -37,7 +37,8 @@ export const store = new Vuex.Store({
                         .then((token) => {
                             commit('authUser', {
                                 idToken: token,
-                                userId: firebase.auth().currentUser.uid
+                                userId: firebase.auth().currentUser.uid,
+                                logado: true
                             })
                         })
                 }

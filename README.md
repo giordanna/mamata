@@ -1,21 +1,28 @@
 # mamata
 
-## Project setup
+Uma releitura da obra prima acabouamamata.com.br, com autenticação de usuário e CRUD da lista de mamatas utilizando o firebase.
+
+## Dependências
+- vue
+- vue-clickaway
+- vue-router
+- vuex
+- firebase
+
+## Instalação
 ```
+git clone https://github.com/giordanna/mamata.git
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Execução pra desenvolvimento
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+OBS: o config do firebase utiliza variáveis que estão no arquivo .env.local, o qual eu não farei uparei para o repositório.
+
+### Compilar para produção
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```

@@ -2,7 +2,7 @@
   <article id="mamatas" class="active">
     <router-link
       class="close"
-      to="/"
+      :to="{name: 'home'}"
       tag="div">
         Close
     </router-link>

@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     transicao() {
-      return this.$route.path === '/' ? 'header' : 'article'
+      return this.$route.name === 'home' ? 'header' : 'article'
     },
     logado() {
       return this.$store.getters.logado
@@ -56,8 +56,8 @@ export default {
   },
   methods: {
     cliqueFora() {
-      if (this.$route.path !== '/') {
-        this.$router.push({ path: '/' })
+      if (this.$route.name !== 'home') {
+        this.$router.push({ name: 'home' })
       }
     },
     logout() {
@@ -139,7 +139,6 @@ export default {
 @keyframes inner-out {
   from {
     max-height: 40rem;
-    padding: 3rem 2rem;
   }
   to {
     max-height: 0;
@@ -157,7 +156,6 @@ export default {
   }
   to {
     max-height: 40rem;
-    padding: 3rem 2rem;
   }
 }
 

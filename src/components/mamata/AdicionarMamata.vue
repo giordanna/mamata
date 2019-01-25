@@ -67,7 +67,7 @@
             <br>
             <center>
                 <button @click.prevent="enviar" :disabled="valido">Adicionar mamata</button>
-                <router-link tag="button" to="/mamatas">Cancelar</router-link>
+                <router-link tag="button" :to="{name: 'mamatas'}">Cancelar</router-link>
             </center>
 
         </form>

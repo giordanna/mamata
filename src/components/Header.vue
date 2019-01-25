@@ -36,10 +36,10 @@
     </div>
     <nav class="use-middle">
         <ul>
-            <li><router-link to="/mamatas" tag="a">Mamatas</router-link></li>
-            <li><router-link to="/definicao" tag="a">Definição</router-link></li>
-            <li class="is-middle"><router-link to="/formacao" tag="a">Formação</router-link></li>
-            <li><router-link to="/sobre" tag="a">Sobre</router-link></li>
+            <li><router-link :to="{name: 'mamatas'}" tag="a">Mamatas</router-link></li>
+            <li><router-link :to="{name: 'definicao'}" tag="a">Definição</router-link></li>
+            <li class="is-middle"><router-link :to="{name: 'formacao'}" tag="a">Formação</router-link></li>
+            <li><router-link :to="{name: 'sobre'}" tag="a">Sobre</router-link></li>
         </ul>
     </nav>
 

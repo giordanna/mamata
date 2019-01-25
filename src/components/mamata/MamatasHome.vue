@@ -5,7 +5,7 @@
           v-if="logado"
           class="add"
           tag="button"
-          to="/mamatas/new">
+          :to="{name: 'new'}">
           + mamata
         </router-link>
 

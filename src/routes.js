@@ -54,14 +54,14 @@ const Login = resolve => {
 }
 
 export const routes = [
-    { path: '/', component: Header },
+    { path: '', name: 'home', component: Header },
     { path: '/mamatas', component: Mamatas, children: [
-        { path: '', component: MamatasHome }, 
-        { path: 'new', component: AdicionarMamata }
+        { path: '', name: 'mamatas', component: MamatasHome }, 
+        { path: 'new', name: 'new', component: AdicionarMamata }
     ] },
-    { path: '/definicao', component: Definicao },
-    { path: '/formacao', component: Formacao },
-    { path: '/sobre', component: Sobre },
-    { path: '/login', component: Login },
-    { path: '*', redirect: '/' }
+    { path: '/definicao', name: 'definicao', component: Definicao },
+    { path: '/formacao', name: 'formacao', component: Formacao },
+    { path: '/sobre', name: 'sobre', component: Sobre },
+    { path: '/login', name: 'login', component: Login },
+    { path: '*', redirect: { name: 'home' } }
 ]
